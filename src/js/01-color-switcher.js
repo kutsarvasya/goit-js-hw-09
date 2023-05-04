@@ -1,6 +1,6 @@
 const startBtnEl = document.querySelector('[data-start]')
 const stopBtnEl = document.querySelector('[data-stop]')
-timeId = null
+let timeId = null
 
 startBtnEl.addEventListener('click', (e) => {
     e.target.disabled = true
