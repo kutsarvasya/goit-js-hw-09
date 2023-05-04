@@ -1,13 +1,13 @@
-import flatpickr from "flatpickr";
-import "flatpickr/dist/flatpickr.min.css";
+import flatpickr from 'flatpickr';
+import 'flatpickr/dist/flatpickr.min.css';
 import Notiflix from 'notiflix';
 
-const dateInputEl = document.querySelector('#datetime-picker')
-const startBtnTimerEl = document.querySelector('[data-start]')
-const daysEl = document.querySelector('[data-days]')
-const hoursEl = document.querySelector('[data-hours]')
-const minutesEl = document.querySelector('[data-minutes]')
-const secondsEl = document.querySelector('[data-seconds]')
+const dateInputEl = document.querySelector('#datetime-picker');
+const startBtnTimerEl = document.querySelector('[data-start]');
+const daysEl = document.querySelector('[data-days]');
+const hoursEl = document.querySelector('[data-hours]');
+const minutesEl = document.querySelector('[data-minutes]');
+const secondsEl = document.querySelector('[data-seconds]');
 
 startBtnTimerEl.disabled = true;
 
@@ -18,15 +18,15 @@ const options = {
   minuteIncrement: 1,
   onClose(selectedDates) {
     if (selectedDates[0].getTime() < Date.now()) {
-      Notiflix.Notify.info("Please choose a date in the future");
+      Notiflix.Notify.info('Please choose a date in the future');
       startBtnTimerEl.disabled = true;
     } else {
       startBtnTimerEl.disabled = false;
-    };
+    }
   },
 };
 
-flatpickr(dateInputEl, options)
+flatpickr(dateInputEl, options);
 // console.log(options.onClose(dateT));
 function convertMs(ms) {
   // Number of milliseconds per unit of time
@@ -42,36 +42,36 @@ function convertMs(ms) {
   // Remaining minutes
   const minutes = addLeadingZero(Math.floor(((ms % day) % hour) / minute));
   // Remaining seconds
-  const seconds = addLeadingZero(Math.floor((((ms % day) % hour) % minute) / second));
+  const seconds = addLeadingZero(
+    Math.floor((((ms % day) % hour) % minute) / second)
+  );
 
   return { days, hours, minutes, seconds };
 }
 
+startBtnTimerEl.addEventListener('click', onTimerForClick);
 
-startBtnTimerEl.addEventListener('click', onTimerForClick)
-
-function onTimerForClick (){
+function onTimerForClick() {
   startBtnTimerEl.disabled = true;
   dateInputEl.disabled = true;
-  const selectedDate = new Date(dateInputEl.value)
-  const currentDate = new Date
-  let gap = selectedDate - currentDate
+  const selectedDate = new Date(dateInputEl.value);
+  const currentDate = new Date();
+  let gap = selectedDate - currentDate;
   const intervalId = setInterval(() => {
-    const { days, hours, minutes, seconds } = convertMs(gap)
-    gap -= 1000
-     daysEl.textContent = days;
-     hoursEl.textContent = hours;
-     minutesEl.textContent = minutes;
-     secondsEl.textContent = seconds;
+    const { days, hours, minutes, seconds } = convertMs(gap);
+    daysEl.textContent = days;
+    hoursEl.textContent = hours;
+    minutesEl.textContent = minutes;
+    secondsEl.textContent = seconds;
+    gap -= 1000;
     if (gap <= 0) {
-      clearInterval(intervalId)
+      clearInterval(intervalId);
       dateInputEl.disabled = false;
-      return
-    } 
-  },1000)
+      return;
+    }
+  }, 1000);
 }
 
 function addLeadingZero(value) {
-  return value.toString().padStart(2, 0)
+  return value.toString().padStart(2, 0);
 }
-
